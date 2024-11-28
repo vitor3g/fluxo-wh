@@ -10,24 +10,13 @@ class DiscordSender {
   }
 
   public async send(customer: Customer, product: Product) {
-    this.discord.send("", [
-      {
-        title: "Nova Compra no FLUXOP",
-        description:
-          "O jogador piriripopo comprou um Carro modelo blau na cidade, parabéns meu consagrado",
-        color: 11535793,
-        fields: [],
-        image: {
-          url: "https://cache.nowayrp.uk/NoWay/Imagem/banner-detail.gif",
-        },
-        footer: {
-          text: "https://fluxo.gg",
-        },
-        author: {
-          name: "FLUXO ROLEPLAY",
-        },
-      },
-    ]);
+    const discord_id = product.variables.find(
+      (variable) => variable.identifier === "discord_id"
+    );
+
+    if (!discord_id) return;
+
+    this.discord.send("", [config.embed]);
   }
 }
 

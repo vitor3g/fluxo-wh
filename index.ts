@@ -1,6 +1,5 @@
 import express from "express";
 import type { Root } from "./@types/tebex";
-import { Webhook } from "simple-discord-webhooks";
 import { DiscordSender } from "./senders/discord";
 
 const server = express();
@@ -10,13 +9,25 @@ server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
 
 server.post("/tebex", async (req, res) => {
-  const request = req.body as Root;
+  const request = req.body.subject as Root;
+
+  // @ts-ignore
+  if (request.type === "validation.webhook") {
+    res.status(200).json({
+      // @ts-ignore
+      id: request.id,
+    });
+
+    return;
+  }
 
   // mock discord event
   switch (request.status.id) {
     case 1:
       const product = request.products[0];
       const customer = request.customer;
+
+      console.log(product.variables);
 
       await discordSender.send(customer, product);
 
