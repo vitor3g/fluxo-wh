@@ -10,7 +10,7 @@ class DiscordSender {
   }
 
   public async send(customer: Customer, product: Product) {
-    const discord_id = product.variables.find(
+    const discord_id = product.variables.find(//
       (variable) => variable.identifier === "discord_id"
     );
 
